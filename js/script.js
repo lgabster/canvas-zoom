@@ -1,5 +1,4 @@
 (function(win, ns, $) {
-
   namespace = win[ns] || {}
   win[ns] = namespace
 
@@ -21,6 +20,9 @@
 
       this.bgImage = new Image;
       this.markerImage = new Image;
+
+      this.bgImage.src = this.url;
+      this.markerImage.src = 'img/marker.svg';
 
       var dragStart,dragged;
 
@@ -58,6 +60,7 @@
       return ctx;
     },
     redraw: function(context) {
+      var context = context || this.ctx;
       var p1 = context.transformedPoint(0, 0);
       var p2 = context.transformedPoint(canvas.width, canvas.height);
 
@@ -69,7 +72,6 @@
 
       console.log(this.url);
 
-      this.bgImage.src = this.url;
 
       namespace.rate = this.bgImage.width > this.bgImage.height ? canvas.width / this.bgImage.width : canvas.height / this.bgImage.height;
       // console.log('OriginalImageSize', this.bgImage.width, this.bgImage.height)
@@ -82,7 +84,6 @@
         context.drawImage(namespace.canvasDrawer.markerImage, location.x, location.y, 40, 50);
       });
 
-      this.markerImage.src = 'img/marker.svg';
     },
     trackTransforms: function(ctx) {
       var svg = document.createElementNS("http://www.w3.org/2000/svg",'svg');
@@ -166,8 +167,8 @@
 
 
   $(function() {
-      var context = namespace.canvasDrawer.init();
-      namespace.canvasDrawer.redraw(context);
+    var context = namespace.canvasDrawer.init();
+    namespace.canvasDrawer.redraw(context);
   });
 
 })(window, 'namespace', jQuery)
